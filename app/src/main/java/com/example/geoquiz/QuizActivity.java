@@ -14,8 +14,8 @@ import android.os.Bundle;
 public class QuizActivity extends AppCompatActivity {
     private Button mTrueButton;
     private Button mFalseButton;
-    private ImageButton mNextButton;
-    private ImageButton mPreviousButton;
+    private Button mNextButton;
+    private Button mPreviousButton;
     private TextView mQuestionTextView;
 
     private Question[] mQuestionBank = new Question[]{
@@ -52,20 +52,28 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
-        mNextButton = (ImageButton) findViewById(R.id.next_button);
+        mNextButton = (Button) findViewById(R.id.next_button);
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
+                mPreviousButton.setEnabled(true);
+                mCurrentIndex = mCurrentIndex + 1;
+                if (mCurrentIndex == mQuestionBank.length - 1){
+                    mNextButton.setEnabled(false);
+                }
                updateQuestion();
             }
         });
 
-        mPreviousButton = (ImageButton) findViewById(R.id.previous_button);
+        mPreviousButton = (Button) findViewById(R.id.previous_button);
         mPreviousButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mCurrentIndex = mCurrentIndex > 0 ? (mCurrentIndex - 1) : (mQuestionBank.length - 1);
+                mNextButton.setEnabled(true);
+                mCurrentIndex = mCurrentIndex - 1;
+                if (mCurrentIndex == 0){
+                    mPreviousButton.setEnabled(false);
+                }
                 updateQuestion();
             }
         });
